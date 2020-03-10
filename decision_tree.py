@@ -2,11 +2,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import preprocessing
+from sklearn import metrics
 from mpl_toolkits import mplot3d
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score 
 from sklearn.metrics import classification_report    
 from sklearn import tree
+from sklearn.metrics import confusion_matrix 
 
 
 df = preprocessing.preprocessing().get_df()
@@ -16,9 +18,11 @@ testing = df[~msk]
 
 feature_cols = ['Category','Rating','Reviews','Size','Price','Content Rating']
 x_train = training[feature_cols]
-y_train = training['Installs'] #target
+y_train = training['Installs']
+y_train = y_train.astype("int")
 x_test = testing[feature_cols]
 y_test = testing['Installs'] #target
+y_test = y_test.astype("int")
 
 clf = DecisionTreeClassifier()
 clf = clf.fit(x_train,y_train)

@@ -10,7 +10,9 @@ class preprocessing:
 		self.to_numerical_size('Size')
 		self.to_numerical('Price', ['$'])
 		self.to_numerical('Installs', [',','+'])
+		self.df = self.df.dropna()
 		print(self.df)
+
 	def read_file(self):
 		file_path = 'google-play-store-apps/googleplaystore.csv'
 		df = pd.read_csv(file_path)
@@ -21,19 +23,21 @@ class preprocessing:
 		mapping = {}
 		count = 0
 		for index, row in self.df.iterrows():
-			if (row[col] in mapping):
-				self.df.at[index, col] = mapping.get(row[col])
+			if (self.df.at[index,col] in mapping):
+				self.df.at[index, col] = mapping.get(self.df.at[index,col])
 				continue
-			mapping[row[col]] = count
-			self.df.at[index,col] = mapping.get(row[col])
-			++count
+			count += 1
+			mapping[self.df.at[index,col]] = count
+			self.df.at[index,col] = count
 
 	def to_numerical(self, col, to_avoid):
 		for index, row in self.df.iterrows():
 			for avoid in to_avoid:
 				self.df.at[index,col] = self.df.at[index,col].replace(avoid,'')
-			print(self.df.at[index,col])
-			self.df.at[index,col] = float(self.df.at[index,col])
+			try:
+				self.df.at[index,col] = float(self.df.at[index,col])
+			except ValueError:
+				self.df.drop(index, inplace=True)
 
 	def to_numerical_size(self, col):
 		for index, row in self.df.iterrows():
