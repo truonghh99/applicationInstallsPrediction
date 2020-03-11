@@ -38,7 +38,6 @@ class preprocessing:
 				self.df.at[index,col] = float(self.df.at[index,col])
 			except ValueError:
 				self.df.drop(index, inplace=True)
-
 	def to_numerical_size(self, col):
 		for index, row in self.df.iterrows():
 			if (row[col] == "Varies with device"):

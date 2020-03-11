@@ -16,12 +16,12 @@ msk = np.random.rand(len(df)) < 0.8
 training = df[msk]
 testing = df[~msk]
 
-feature_cols = ['Category','Rating','Reviews','Size','Price','Content Rating']
+feature_cols = ['Category','Installs','Reviews','Size','Price','Content Rating']
 x_train = training[feature_cols]
-y_train = training['Installs']
+y_train = training['Rating']
 y_train = y_train.astype("int")
 x_test = testing[feature_cols]
-y_test = testing['Installs'] #target
+y_test = testing['Rating'] #target
 y_test = y_test.astype("int")
 
 clf = DecisionTreeClassifier()
